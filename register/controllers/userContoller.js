@@ -31,7 +31,7 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const loginUser = await User.findOne({ email });
+    const loginUser = await User.find({ email });
 
     if (!email || !password) {
       return res.status(400).json({ message: "Email ane Password joiye chhe" });
