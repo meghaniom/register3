@@ -1,9 +1,8 @@
-const User = require('../models/usermodel')
+const User = require("../models/usermodel");
 const bcrypt = require("bcrypt");
-const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
-const JWT_SECRET = 'ommeghani';
-
+const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
+const JWT_SECRET = "ommeghani";
 
 exports.register = async (req, res) => {
   try {
@@ -38,7 +37,9 @@ exports.login = async (req, res) => {
     const loginUser = await User.findOne({ email });
 
     if (!loginUser) {
-      return res.status(400).json({ message: "Invalid email, the email is not registered" });
+      return res
+        .status(400)
+        .json({ message: "Invalid email, the email is not registered" });
     }
 
     const isPasswordValid = await bcrypt.compare(password, loginUser.password);
@@ -46,17 +47,22 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: "Invalid password" });
     }
 
-    const hashedId = crypto.createHash('sha256').update(loginUser._id.toString()).digest('hex');
-    const hashedemail = crypto.createHash('sha256').update(loginUser.email.toString()).digest('hex');
-
-    const token = jwt.sign({ id: hashedId , email : hashedemail}, JWT_SECRET, {
-      expiresIn: '24h'
+    const hashedId = crypto
+      .createHash("sha256")
+      .update(loginUser._id.toString())
+      .digest("hex");
+    const hashedemail = crypto
+      .createHash("sha256")
+      .update(loginUser.email.toString())
+      .digest("hex");
+  
+    const token = jwt.sign({ id: hashedId, email: hashedemail }, JWT_SECRET, {
+      expiresIn: "24h",
     });
 
-    res.status(200).json({  token });
+    res.status(200).json({ token });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
