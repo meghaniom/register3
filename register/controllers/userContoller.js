@@ -1,5 +1,8 @@
 const User = require('../models/usermodel')
 const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const JWT_SECRET = 'ommeghani';
 
 
 exports.register = async (req, res) => {
@@ -47,7 +50,13 @@ exports.register = async (req, res) => {
       return res.status(400).json({ message: "Invalid password" });
     }
 
-    res.status(200).json({ message: "Login successfully" });
+    const hashedId = crypto.createHash('sha256').update(User._id.toString()).digest('hex');
+
+    const token = jwt.sign({ id :hashedId }, JWT_SECRET,{
+       expiresIn: '1h'
+    });
+      res.json({ token });
+    res.status(200).json({ message: "Login successful" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal server error" });
