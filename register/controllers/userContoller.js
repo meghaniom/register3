@@ -31,3 +31,24 @@ const bcrypt = require("bcrypt");
         res.status(500).json({ message: error.message });
     }
 };
+
+ exports.login  = async(req, res) => {
+    try {
+        const { email , password } = req.body;
+         const loginUser = await User.findOne({ email});
+
+         if (!loginUser) {
+            return res.status(400).json({ message : "Invalid email the email are not registered"})
+         }
+         const isPasswordValid = await bcrypt.compare (password, loginUser.password);
+          if (!isPasswordValid) {
+             return res.status(400).json({ message : "Invalid password"})
+          }
+           res.status(200).json({ message : "Login successfully"})
+
+    }
+    catch (error) {
+        console.log(error)
+        res.status(500).json({ message : "Internal server error"});
+    }
+ }
