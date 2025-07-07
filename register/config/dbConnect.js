@@ -11,4 +11,4 @@ const mongoose = require('mongoose');
         process.exit(1);
     }
   }
-   module.exports = dbConnect;q
+   module.exports = dbConnect;
