@@ -32,17 +32,13 @@ exports.register = async (req, res) => {
   }
 };
 
- exports.login = async (req, res) => {
+exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    
-    const loginUser = await User.findOne({ email }); // ✅ correct
+    const loginUser = await User.findOne({ email });
 
     if (!loginUser) {
-      return res
-        .status(400)
-        .json({ message: "Invalid email, the email is not registered" });
+      return res.status(400).json({ message: "Invalid email, the email is not registered" });
     }
 
     const isPasswordValid = await bcrypt.compare(password, loginUser.password);
@@ -50,13 +46,13 @@ exports.register = async (req, res) => {
       return res.status(400).json({ message: "Invalid password" });
     }
 
-    const hashedId = crypto.createHash('sha256').update(User._id.toString()).digest('hex');
+    const hashedId = crypto.createHash('sha256').update(loginUser._id.toString()).digest('hex');
 
-    const token = jwt.sign({ id :hashedId }, JWT_SECRET,{
-       expiresIn: '1h'
+    const token = jwt.sign({ id: hashedId }, JWT_SECRET, {
+      expiresIn: '1h'
     });
-      res.json({ token });
-    res.status(200).json({ message: "Login successful" });
+
+    res.status(200).json({  token });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal server error" });
