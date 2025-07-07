@@ -1,5 +1,5 @@
 const User = require('../models/usermodel');
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 
  exports.register = async (req, res) => {
@@ -35,7 +35,7 @@ const bcrypt = require("bcrypt");
  exports.login  = async(req, res) => {
     try {
         const { email , password } = req.body;
-         const loginUser = await User.findOne({ email});
+         const loginUser = await User.findOne({ email });
 
          if (!loginUser) {
             return res.status(400).json({ message : "Invalid email the email are not registered"})
