@@ -47,9 +47,10 @@ exports.login = async (req, res) => {
     }
 
     const hashedId = crypto.createHash('sha256').update(loginUser._id.toString()).digest('hex');
+    const hashedemail = crypto.createHash('sha256').update(loginUser.email.toString()).digest('hex');
 
-    const token = jwt.sign({ id: hashedId }, JWT_SECRET, {
-      expiresIn: '1h'
+    const token = jwt.sign({ id: hashedId , email : hashedemail}, JWT_SECRET, {
+      expiresIn: '24h'
     });
 
     res.status(200).json({  token });

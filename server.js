@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express ();
-const dbConnect = require('./register/config/dbConnect')
-const router = require('./register/routes/userRoute')
+const dbConnect = require('./config/dbConnect')
+const router = require('./routes/userRoute')
 
 
 
