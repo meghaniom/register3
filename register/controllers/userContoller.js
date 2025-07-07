@@ -1,5 +1,6 @@
-const User = require("../models/usermodel");
+const User = require('../models/usermodel');
 const bcrypt = require("bcrypt");
+
 
 exports.register = async (req, res) => {
   try {
@@ -28,14 +29,10 @@ exports.register = async (req, res) => {
   }
 };
 
-exports.login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const loginUser = await User.find({ email });
-
-    if (!email || !password) {
-      return res.status(400).json({ message: "Email ane Password joiye chhe" });
-    }
+ exports.login  = async(req, res) => {
+    try {
+        const { email , password } = req.body;
+         const loginUser = await User.findOne({ email});
 
     if (!loginUser) {
       return res
