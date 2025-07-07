@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express ();
 const dbConnect = require('./register/config/dbConnect')
+const router = require('./register/routes/userRoute')
 
 
 
@@ -14,6 +15,7 @@ app.use(express.json());
 const PORT = 3000;
 
 
+app.use('/api/v1/auth',router)
 
 
  app.listen(PORT, () => {
