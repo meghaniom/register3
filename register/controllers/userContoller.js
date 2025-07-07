@@ -1,4 +1,4 @@
-const User = require('../models/usermodel');
+const User = require('../models/usermodel')
 const bcrypt = require("bcrypt");
 
 
@@ -29,16 +29,19 @@ exports.register = async (req, res) => {
   }
 };
 
- exports.login  = async(req, res) => {
-    try {
-        const { email , password } = req.body;
-         const loginUser = await User.findOne({ email});
+ exports.login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    
+    const loginUser = await User.findOne({ email }); // ✅ correct
 
     if (!loginUser) {
       return res
         .status(400)
-        .json({ message: "Invalid email the email are not registered" });
+        .json({ message: "Invalid email, the email is not registered" });
     }
+
     const isPasswordValid = await bcrypt.compare(password, loginUser.password);
     if (!isPasswordValid) {
       return res.status(400).json({ message: "Invalid password" });
@@ -50,3 +53,4 @@ exports.register = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
